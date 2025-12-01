@@ -36,7 +36,22 @@ def part1(data: list[str]) -> int:
 
 def part2(data):
     """Solve and return the answer to part 2."""
-    pass
+    safe = list(range(100))  # [0, 1, ... 98, 99]
+    dial_index = 50
+    num_of_zeroes = 0
+
+    for rotation in data:
+        direction = rotation[0]
+        distance = int(rotation[1:])
+
+        for _ in range(distance):
+            dial_index += 1 if direction == "R" else -1
+            dial_position = safe[dial_index % 100]
+
+            if dial_position == 0:
+                num_of_zeroes += 1
+
+    return num_of_zeroes
 
 
 def solve(puzzle_input) -> tuple:
