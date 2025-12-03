@@ -9,7 +9,7 @@ with open("01/example_input.txt", "r") as infile:
 
 def parse(puzzle_input: str):
     """Parse input."""
-    result = puzzle_input.split("\n")
+    result = puzzle_input.strip().split("\n")
 
     pprint(result[-3:])
     print()
