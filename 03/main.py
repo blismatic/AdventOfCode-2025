@@ -35,9 +35,31 @@ def part1(data: list[list[int]]):
     return sum(max_joltages)
 
 
-def part2(data):
+def part2(data: list[list[int]]):
     """Solve and return the answer to part 2."""
-    pass
+    JOLTAGE_DIGITS = 12
+    max_joltages = []
+
+    for bank in data:
+        joltage = ""
+        furthest_index = -1
+
+        for i in range(JOLTAGE_DIGITS):
+            start_index = furthest_index + 1
+            end_index = -(JOLTAGE_DIGITS - i - 1)
+
+            if end_index == 0:
+                highest_digit = max(bank[start_index:])
+            else:
+                highest_digit = max(bank[start_index:end_index])
+
+            furthest_index = bank.index(highest_digit, start_index)
+
+            joltage += str(highest_digit)
+
+        max_joltages.append(int(joltage))
+
+    return sum(max_joltages)
 
 
 def solve(puzzle_input) -> tuple:
