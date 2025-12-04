@@ -1,3 +1,4 @@
+import math
 from pprint import pprint
 
 from aocd import get_data
@@ -68,7 +69,22 @@ def part1(data: set[complex]) -> int:
 
 def part2(data: set[complex]) -> int:
     """Solve and return the answer to part 2."""
-    pass
+    total_removed = 0
+    removed = math.inf
+
+    while removed > 0:
+        removed = 0
+        temp_data = data.copy()
+
+        for roll_of_paper in data:
+            if is_accessible(roll_of_paper, data):
+                removed += 1
+                temp_data.remove(roll_of_paper)
+
+        data = temp_data
+        total_removed += removed
+
+    return total_removed
 
 
 def solve(puzzle_input) -> tuple:
