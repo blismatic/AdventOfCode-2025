@@ -1,3 +1,4 @@
+import math
 from pprint import pprint
 
 from aocd import get_data
@@ -41,9 +42,42 @@ def part1(data: tuple[list[tuple[int, int]], list[int]]) -> int:
     return fresh_count
 
 
-def part2(data):
+def part2(data: tuple[list[tuple[int, int]], list[int]]) -> int:
     """Solve and return the answer to part 2."""
-    pass
+    fresh_ingredient_id_ranges, _ = data
+
+    # Turn them into actual range objects
+    fresh_ingredient_id_ranges = [range(r[0], r[1]) for r in fresh_ingredient_id_ranges]
+
+    # Collapse the overlapping ranges
+    collapsed = True
+
+    while collapsed:
+        collapsed = False
+        temp: list[range] = []
+        fresh_ingredient_id_ranges = sorted(fresh_ingredient_id_ranges, key=lambda r: (r.start, r.stop))
+
+        for r in fresh_ingredient_id_ranges:
+            if any([r.start in range(e.start, e.stop + 1) for e in temp]):
+                existing_range = temp.pop()
+
+                # extend it to the right (or dont, based on which range has a higher stop value)
+                new_range = range(existing_range.start, max(existing_range.stop, r.stop))
+                temp.append(new_range)
+
+                collapsed = True
+            else:
+                temp.append(r)
+
+        fresh_ingredient_id_ranges = temp
+
+    # Now all of the ranges are guaranteed to be non-overlapping, so just sum up their differences
+    result = 0
+    for r in fresh_ingredient_id_ranges:
+        difference = (r.stop - r.start) + 1  # add one to account for inclusive ranges
+        result += difference
+
+    return result
 
 
 def solve(puzzle_input) -> tuple:
